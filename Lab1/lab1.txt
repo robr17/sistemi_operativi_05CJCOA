@@ -1,0 +1,51 @@
+# Esercizio1 
+cd ~/
+mkdir -p my_exercise_1/{source,bin,test,debug} 
+mkdir my_exercise_1/source/{include,lib}
+mkdir my_exercise_1/test/{alfa,beta}
+mkdir my_exercise_1/test/beta/{v1,v2}
+
+# Esercizio2
+vi my_exercise_1/source/edito.txt
+# Scrivo cinque righe all'interno del file, salvo ed esco
+# path assoluto
+cp $HOME/my_exercise_1/source/edito.txt $HOME/test/beta/v1
+cp $HOME/my_exercise_1/source/edito.txt $HOME/test/beta/v2
+# path relativo
+cp my_exercise_1/source/edito.txt my_exercise_1/test/beta/v1
+cp my_exercise_1/source/edito.txt my_exercise_1/test/beta/v2
+# Controllo l'esistenza dei file
+more my_exercise_1/test/beta/v1
+more my_exercise_1/test/beta/v2
+less my_exercise_1/test/beta/v1
+less my_exercise_1/test/beta/v2
+cat my_exercise_1/test/beta/v1
+cat my_exercise_1/test/beta/v2
+vi my_exercise_1/test/alfa/edito.txt
+# comandi: j, j, j, j, j, i, "testo", Esc, ":wq"
+
+# Esercizio3
+cp -r my_exercise_1 my_copy_1
+mkdir my_copy_2
+mkdir my_copy_2/{source,bin,test,debug}
+mkdir my_copy_2/source/{include,lib}
+mkdir my_copy_2/test/{alfa,beta}
+mkdir my_copy_2/test/beta/{v1,v2}
+# i comandi cp e rm in modo ricorsivo permettono di velocizzare e non di poco l'uso della shell
+
+# Esercizio4
+chmod 000 my_copy_2
+# non e` possibile ne` accedere ne` modificare il direttorio senza prima cambiare nuovamente i permessi
+
+#Esercizio5
+# Utilizzo di emacs
+
+# Esercizio6
+# Il nuovo file non ha i giusti permessi di esecuzione.
+# Anche modificandoli con chmod, il programma non può essere eseguito.
+
+# Esercizio7
+# E' possibile creare il direttorio dell'esercizio 3 evitando ri replicare i contenuti per esempio creando un link simbolico
+
+# Esercizio8
+# La dimensione massima del buffer è possibile determinarla mediante le funzioni di I/O diretto
