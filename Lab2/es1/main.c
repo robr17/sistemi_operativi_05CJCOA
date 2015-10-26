@@ -1,21 +1,4 @@
-/*
- * =====================================================================================
- *
- *       Filename:  main.c
- *
- *    Description:  
- *
- *        Version:  1.0
- *        Created:  10/26/2015 12:00:24 PM
- *       Revision:  none
- *       Compiler:  gcc
- *
- *         Author:  Umberto Reale (), 
- *   Organization:  
- *
- * =====================================================================================
- */
-
+// Umberto Reale && Giuseppe Raffa
 
 #include	<stdlib.h>
 #include	<stdio.h>
@@ -28,57 +11,51 @@
 
 void ls_r(char*);
 
-/* 
- * ===  FUNCTION  ======================================================================
- *         Name:  main
- *  Description:  
- * =====================================================================================
- */
-	int
-main ( int argc, char *argv[] )
-{
-	if (argc != 2) return -1;
+int main ( int argc, char *argv[] ) {
+	if (argc != 2) {
+		fprintf(stderr, "Error Arguments\n");
+		return 1;
+	}
 	int l = strlen(argv[1]);
-	if (argv[1][l-1] == '/')
+	if (argv[1][l-1] == '/' && l>1)
 		argv[1][l-1]='\0';
 	ls_r(argv[1]);
-	return EXIT_SUCCESS;
-}				/* ----------  end of function main  ---------- */
+	return 0;
+}
 
-
-/* 
- * ===  FUNCTION  ======================================================================
- *         Name:  ls_r
- *  Description:  
- * =====================================================================================
-*/
-void ls_r ( char *path ){
+void ls_r (char *path) {
 	struct stat mystat;
 	char newpath[1000];
-	stat(path, &mystat);
-	if (S_ISREG(mystat.st_mode))
+	if(lstat(path, &mystat)==EOF) {
+		fprintf(stderr, "Error function lstat\n");
+		exit(2);
+	}
+	if (!S_ISDIR(mystat.st_mode)) //sono in un file
 		return;
-	if (S_ISDIR(mystat.st_mode)){
+	else {
 		fprintf(stdout, "%s: \n", path);
 		// per ogni file qui presente stampa e ricorre
-		DIR* dp = opendir(path);
-		struct dirent *dirp;	
-		
-		// stampa
-		while ( (dirp = readdir (dp)) != NULL){
+		DIR *dp = opendir(path);
+		if(dp==NULL) {
+			fprintf(stderr, "Error function opendir\n");
+			exit(3);
+		}
+		struct dirent *dirp;
+		while ((dirp=readdir(dp))!= NULL){ //stampa dei file contenuti nella directory corrente
 			if (dirp->d_name[0] != '.')
 				fprintf(stdout, "%s\t", dirp->d_name);
 		}
 		fprintf(stdout, "\n");
-
-		// ricorre
-		dp = opendir(path);
-		while ( (dirp = readdir (dp)) != NULL){
+		rewinddir(dp); //ricorsione
+		while ((dirp=readdir(dp))!= NULL){
+			//printf("[ %s ]\n", dirp->d_name);
 			if (dirp->d_name[0] != '.' ){
-				sprintf(newpath, "%s/%s", path, dirp->d_name);
+				if(strcmp(path,"/")==0) sprintf(newpath, "%s%s", path, dirp->d_name);
+				else sprintf(newpath, "%s/%s", path, dirp->d_name);
+				//fprintf(stderr, "\n[ %s ]\n", newpath);
 				ls_r(newpath);				
 			}
 		}
-			}
+	}
 	return;
-}		/* -----  end of function ls_r  ----- */
+}
