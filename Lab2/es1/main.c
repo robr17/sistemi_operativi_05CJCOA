@@ -35,7 +35,7 @@ void ls_r (char *path) {
 	else {
 		fprintf(stdout, "%s: \n", path);
 		// per ogni file qui presente stampa e ricorre
-		DIR *dp = opendir(path);
+		DIR *dp= opendir(path);
 		if(dp==NULL) {
 			fprintf(stderr, "Error function opendir\n");
 			exit(3);
@@ -56,6 +56,7 @@ void ls_r (char *path) {
 				ls_r(newpath);				
 			}
 		}
+		closedir(dp);
 	}
 	return;
 }
