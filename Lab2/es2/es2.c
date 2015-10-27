@@ -32,7 +32,6 @@ int main (int argc, char *argv[]) { // Copiare il I path nel II path, assumo che
 		exit(1);
 	}
 	
-	//mkdir
 	cp_r(argv[1],argv[2]);
 
 	return(0);
@@ -55,7 +54,7 @@ void cp_r(char *path1,char *path2) {
 		return;
 	}
 	else {
-		mkdir(path2,S_IRWXU | S_IRWXG | S_IRWXO); //chiedere spiegazioni permessi
+		mkdir(path2,S_IRWXU | S_IRWXG | S_IRWXO);
 		while((dp=readdir(dirp1))!=NULL) {
 			if(dp->d_name[0]!='.') {
 				sprintf(ptr,"%s/%s",path1,dp->d_name);
