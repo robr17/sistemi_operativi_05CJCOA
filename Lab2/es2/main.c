@@ -48,7 +48,7 @@ void cp_r(char *path1,char *path2) {
 	if(S_ISREG(info.st_mode)) { //usare read e write per copiare file
 		fp1=open(path1,O_RDONLY);
 		fp2=open(path2,O_WRONLY | O_CREAT, info.st_mode); // info.st_mode mi permette di copiare i file
-		while(read(fp1,buff,BUFFSIZE)>0) {				  // nel nuovo direttorio mantenendo i permessi
+		while(read(fp1,buff,BUFFSIZE)>0) {		  // nel nuovo direttorio mantenendo i permessi
 			write(fp2,buff,BUFFSIZE);
 		}
 		close(fp1); close(fp2);
