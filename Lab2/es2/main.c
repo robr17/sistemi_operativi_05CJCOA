@@ -55,7 +55,7 @@ void cp_r(char *path1,char *path2) {
 		return;
 	}
 	else {
-		mkdir(path2,S_IRWXU | S_IRWXG | S_IRWXO);
+		mkdir(path2,/*  S_IRWXU | S_IRWXG | S_IRWXO*/ info.st_mode);
 		while((dp=readdir(dirp1))!=NULL) {
 			if(dp->d_name[0]!='.') {
 				sprintf(ptr,"%s/%s",path1,dp->d_name);
