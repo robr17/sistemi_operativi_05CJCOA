@@ -6,7 +6,7 @@
 #define M 5
 
 /*	Se definito il padre attende tutti gli N figli creati e termina.
-	Se non definito il padre attende gli M<N figli creati e termina.
+	Se non definito il padre attende gli ultimi M<N figli creati e termina.
 */
 #define switch
 
@@ -40,7 +40,7 @@ int main (int argc, char **argv) {
 
 	#else
 
-	for (i=0; i<M; i++) {
+	for (i=N-1; i>=M; i--) {
 		waitpid(pid_v[i], &status, 0);
 		if (!WIFEXITED(status)) {
 			printf("Uno dei processi non è stato eseguito correttamente.\n");
