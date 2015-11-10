@@ -13,7 +13,7 @@
 #include <sys/stat.h>
 #include <sys/wait.h>
 
-#define PRINT "Pid: %d --- Pid Padre: %d\n",getpid(),getppid()
+#define PRINT " Pid: %d --- Pid Padre: %d\n",getpid(),getppid()
 #define CHECK(pid) if(pid==-1) {printf(" --> Fork error\n"); exit(EXIT_FAILURE);}
 #define EXIT exit(EXIT_SUCCESS);
 
@@ -37,21 +37,25 @@ int main (int argc, char *argv[]) {
 		if(!fork()) { //P2, il master PL aspetta la sua esecuzione e poi procede avanti
 			printf("P2" PRINT);
 			EXIT
-	}
-	wait(NULL);
-	pid_t pid_ll=0,pid_lr=0;
-	pid_lr=fork();
-	if(pid_lr==0) { //sono il figlio PLR
-		if(!fork()) { //sono P5
-			printf("P5" PRINT);
-			EXIT
 		}
 		wait(NULL);
-	}
-	else { //devo creare PLL
-		pid_ll=fork();
-		if(pid_ll==0) { //devo creare P4
-			if(!fork()) {
+		pid_t pid_ll=0,pid_lr=0;
+		pid_lr=fork(); //??
+		if(pid_lr==0) { //sono il figlio PLR
+			if(!fork()) { //sono P5
+				printf("P5" PRINT);
+				EXIT
+			}
+			wait(NULL);
+		}
+		else { //devo creare PLL
+			pid_ll=fork();
+			if(pid_ll==0) { //devo creare P4
+				if(!fork()) { //sono P4
+					printf("P4" PRINT);
+					EXIT
+				}
+				wait(NULL); //colui che aspetta è PLL
 				pid_t pid_lll=0,pid_llr=0;
 				pid_lll=fork();
 				if(pid_lll==0) { //devo creare P7
@@ -59,26 +63,27 @@ int main (int argc, char *argv[]) {
 						printf("P7" PRINT);
 						EXIT
 					}
-				wait(NULL);
+					wait(NULL);
 				}
-				else { //devo creare pllr per poi creare p8 
+				else { //devo creare pllr per poi creare p8
 					pid_llr=fork();
-					if(!fork()) {
-						printf("P8" PRINT);
-						EXIT
+					if(pid_llr==0) {
+						if(!fork()) {
+							printf("P8" PRINT);
+							EXIT
+						}
+						wait(NULL);
 					}
-				wait(NULL);
 				}
 				wait(NULL);
 			}
 		}
 		wait(NULL); //aspetta l'if precedente
+		wait(NULL); //aspetta plr
 	}
-	wait(NULL); //aspetta plr
 	//
 	//
 	//exit
-	}
 	else {
 		pid_r=fork();  //eseguita dal master
 		if(pid_r==0) { //il master0 crea il master destro PR 
